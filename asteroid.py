@@ -1,4 +1,5 @@
 from turtle import *
+import random
 
 s_size = 500
 screenMinX = -s_size
@@ -15,6 +16,7 @@ class Asteroid(RawTurtle):
         self.dx = dx
         self.dy = dy
         self.shape("ast" + str(size))
+        self.rotation = random.random() * 5
 
     def getSize(self):
         return self.size
@@ -40,6 +42,7 @@ class Asteroid(RawTurtle):
         up_y = (self.dy + y - screenMinY) % (screenMaxY - screenMinY) + screenMinY
 
         self.goto(up_x, up_y)
+        self.setheading(self.heading() + self.rotation)
 
     def getRad(self):
         return self.size * 10 - 5

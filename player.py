@@ -1,6 +1,8 @@
 from turtle import *
 import math
 
+max_speed = 25
+
 s_size = 500
 screenMinX = -s_size
 screenMinY = -s_size
@@ -31,8 +33,10 @@ class Player(RawTurtle):
         angle = self.heading()
         x = math.cos(math.radians(angle))
         y = math.sin(math.radians(angle))
-        self.dx = self.dx + x
-        self.dy = self.dy + y
+        if(self.dx < max_speed):
+            self.dx += x
+        if(self.dy < max_speed):
+            self.dy += y
    
     def getRadius(self):
         return 2
