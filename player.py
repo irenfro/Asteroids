@@ -41,8 +41,8 @@ class Player(RawTurtle):
     def getRadius(self):
         return 2
     
-    def getDX(self):
+    def getDx(self):
         return self.dx
     
-    def getDY(self):
+    def getDy(self):
         return self.dy

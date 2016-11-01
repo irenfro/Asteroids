@@ -4,6 +4,7 @@ import tkinter
 import random
 import asteroid
 import player
+import bullet
 
 s_size = 500
 screenMinX = -s_size
@@ -41,6 +42,7 @@ def main():
     ship = player.Player(cv,0,0,(screenMaxX-screenMinX)/2+screenMinX,(screenMaxY-screenMinY)/2 + screenMinY)
 
     asteroids = []
+    bullets = []
 
     for a in range(10):
         dx = random.random() * 6 - 3
@@ -59,11 +61,24 @@ def main():
     
     def forward():
         ship.move()
+
+    def fire():
+        b = bullet.Bullet(cv, ship.xcor(), ship.ycor(), ship.heading(), ship.getDx(), ship.getDy())
+        bullets.append(b)
     
     def play():
         ship.update()
         for asteroid in asteroids:
             asteroid.update()
+        for bullet in bullets:
+            bullet.update()
+
+            if bullet.getLifeSpan() <= 0:
+                try:
+                    bullets.remove(bullet)
+                except:
+                    print("error removing bullet")
+                bullet.ht()
         screen.ontimer(play, 5)
 
     screen.ontimer(play, 5)
@@ -71,7 +86,8 @@ def main():
     screen.onkeypress(turnLeft, "Left")
     screen.onkeypress(turnRight, "Right")
     screen.onkeypress(forward, "Up")
-    
+    screen.onkeypress(fire, " ")
+
     screen.listen()
     
     tkinter.mainloop()

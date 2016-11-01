@@ -1,5 +1,5 @@
 from turtle import *
-import random
+import math
 
 s_size = 500
 screenMinX = -s_size
@@ -7,19 +7,20 @@ screenMinY = -s_size
 screenMaxX = s_size
 screenMaxY = s_size
 
-class Asteroid(RawTurtle):
-    def __init__(self, canvas, dx, dy, x, y, size):
-        RawTurtle.__init__(self, canvas)
+class Bullet(RawTurtle):
+    def __init__(self, canvas, x, y, direc, dx, dy):
+        super().__init__(canvas)
         self.penup()
         self.goto(x, y)
-        self.size = size
-        self.dx = dx
-        self.dy = dy
-        self.shape("ast" + str(size))
-        self.rotation = random.random() * 5
+        self.setheading(direc)
+        self.color("Red")
+        self.lifespan = 200
+        self.dx = math.cos(math.radians(direc)) * 2 + dx
+        self.dy = math.sin(math.radians(direc)) * 2 + dy
+        self.shape("bullet")
 
-    def getSize(self):
-        return self.size
+    def getLifeSpan(self):
+        return self.lifespan
 
     def getDx(self):
         return self.dx
@@ -27,13 +28,11 @@ class Asteroid(RawTurtle):
     def getDy(self):
         return self.dy
 
-    def setDx(self, dx):
-        self.dx = dx
-
-    def setDy(self, dy):
-        self.dy = dy
+    def getRadius(self):
+        return 4
 
     def update(self):
+        self.lifespan -= 1
         screen = self.getscreen()
         x = self.xcor()
         y = self.ycor()
@@ -42,7 +41,3 @@ class Asteroid(RawTurtle):
         up_y = (self.dy + y - screenMinY) % (screenMaxY - screenMinY) + screenMinY
 
         self.goto(up_x, up_y)
-        self.setheading(self.heading() + self.rotation)
-
-    def getRadius(self):
-        return self.size * 10 - 5
