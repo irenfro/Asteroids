@@ -2,7 +2,8 @@ from turtle import *
 import tkinter.messagebox
 import tkinter
 import random
-import asteroid
+import math
+import asteroid as AST
 import player
 import bullet
 
@@ -11,6 +12,12 @@ screenMinX = -s_size
 screenMinY = -s_size
 screenMaxX = s_size
 screenMaxY = s_size
+
+def intersect(object1,object2):
+    dist = math.sqrt((object1.xcor() - object2.xcor())**2 + (object1.ycor() - object2.ycor())**2)
+    radius1 = object1.getRadius()
+    radius2 = object2.getRadius()      
+    return dist <= radius1+radius2
 
 def main():
     root = tkinter.Tk()
@@ -28,6 +35,16 @@ def main():
     screen.register_shape("bullet", ((-2, -4), (-2, 4), (2, 4), (2, -4)))
     frame = tkinter.Frame(root)
     frame.pack(side = tkinter.RIGHT, fill = tkinter.BOTH)
+    
+    scoreVal = tkinter.StringVar()
+    scoreVal.set("0")
+    scoreTitle = tkinter.Label(frame, text="Score")
+    scoreTitle.pack()
+    scoreFrame = tkinter.Frame(frame, height=2, bd=1, relief=tkinter.SUNKEN)
+    scoreFrame.pack()
+    score = tkinter.Label(scoreFrame, height=2, width=20, textvariable=scoreVal, fg="Yellow", bg="black")
+    score.pack()
+    
     t.ht()
     
     def quitHandler():
@@ -50,7 +67,7 @@ def main():
         x = random.random() * (screenMaxX - screenMinX) + screenMinX
         y = random.random() * (screenMaxY - screenMinY) + screenMinY
 
-        ast = asteroid.Asteroid(cv, dx, dy, x, y, 3)
+        ast = AST.Asteroid(cv, dx, dy, x, y, 3)
         asteroids.append(ast)
     
     def turnLeft():
@@ -79,6 +96,46 @@ def main():
                 except:
                     print("error removing bullet")
                 bullet.ht()
+            else:
+                end_ast = []
+                for ast in asteroids:
+                    if intersect(bullet, ast):
+                        end_ast.append(ast)
+                        try:
+                            bullets.remove(bullet)
+                        except:
+                            print("error removing bullet")
+                        bullet.ht()
+                        ast.setDx(bullet.getDx() + ast.getDx())
+                        ast.setDy(bullet.getDy() + ast.getDy())
+                for ast in end_ast:
+                    try:
+                        asteroids.remove(ast)
+                    except:
+                        print("error removing asteroid")
+
+                    ast.ht()
+                    size = ast.getSize()
+
+                    score = int(scoreVal.get())
+
+                    if size == 3:
+                        score += 20
+                    elif size == 2:
+                        score += 50
+                    elif size == 1:
+                        score += 100
+
+                    scoreVal.set(str(score))
+
+                    if ast.getSize() > 1:
+                        dist = math.sqrt(ast.getDx() ** 2 + ast.getDy() ** 2)
+
+                        ast1 = AST.Asteroid(cv, -ast.getDx() / dist, ast.getDy() / dist, ast.xcor(), ast.ycor(), ast.getSize() - 1)
+                        ast2 = AST.Asteroid(cv, ast.getDx() / dist, -ast.getDy() / dist, ast.xcor(), ast.ycor(), ast.getSize() - 1)
+                        asteroids.append(ast1)
+                        asteroids.append(ast2)
+
         screen.ontimer(play, 5)
 
     screen.ontimer(play, 5)

@@ -14,10 +14,12 @@ class Bullet(RawTurtle):
         self.goto(x, y)
         self.setheading(direc)
         self.color("Red")
-        self.lifespan = 200
-        self.dx = math.cos(math.radians(direc)) * 2 + dx
-        self.dy = math.sin(math.radians(direc)) * 2 + dy
-        self.shape("bullet")
+        self.lifespan = 100
+        self.dx = math.cos(math.radians(direc)) * 10 + dx
+        self.dy = math.sin(math.radians(direc)) * 10 + dy
+        dist = math.sqrt(self.dx**2 + self.dy**2)
+        self.shape("circle")
+        self.shapesize(.25, .25, .25)
 
     def getLifeSpan(self):
         return self.lifespan
@@ -29,7 +31,7 @@ class Bullet(RawTurtle):
         return self.dy
 
     def getRadius(self):
-        return 4
+        return .25
 
     def update(self):
         self.lifespan -= 1
