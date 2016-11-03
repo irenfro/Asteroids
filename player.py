@@ -13,7 +13,6 @@ class Player(RawTurtle):
     def __init__(self,canvas,dx,dy,x,y):
         RawTurtle.__init__(self,canvas)
         self.penup()
-        self.color("cyan")
         self.goto(x,y)
         self.dx = dx
         self.dy = dy

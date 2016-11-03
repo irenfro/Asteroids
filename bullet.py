@@ -8,12 +8,12 @@ screenMaxX = s_size
 screenMaxY = s_size
 
 class Bullet(RawTurtle):
-    def __init__(self, canvas, x, y, direc, dx, dy):
+    def __init__(self, canvas, x, y, direc, dx, dy, color):
         super().__init__(canvas)
         self.penup()
         self.goto(x, y)
+        self.color(color)
         self.setheading(direc)
-        self.color("Red")
         self.lifespan = 100
         self.dx = math.cos(math.radians(direc)) * 10 + dx
         self.dy = math.sin(math.radians(direc)) * 10 + dy
