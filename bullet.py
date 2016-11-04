@@ -1,6 +1,7 @@
 from turtle import *
 import math
 
+#screen sizes
 s_size = 500
 screenMinX = -s_size
 screenMinY = -s_size
@@ -8,6 +9,7 @@ screenMaxX = s_size
 screenMaxY = s_size
 
 class Bullet(RawTurtle):
+    #init all values for the bullet
     def __init__(self, canvas, x, y, direc, dx, dy, color):
         super().__init__(canvas)
         self.penup()
@@ -21,6 +23,21 @@ class Bullet(RawTurtle):
         self.shape("circle")
         self.shapesize(.25, .25, .25)
 
+    #update position on the screen
+    def update(self):
+        #decrease how many uppdates to can go through
+        self.lifespan -= 1
+        screen = self.getscreen()
+        x = self.xcor()
+        y = self.ycor()
+
+        #make sure new position is on the screen
+        up_x = (self.dx + x - screenMinX) % (screenMaxX - screenMinX) + screenMinX
+        up_y = (self.dy + y - screenMinY) % (screenMaxY - screenMinY) + screenMinY
+
+        self.goto(up_x, up_y)
+    
+    #getters
     def getLifeSpan(self):
         return self.lifespan
 
@@ -32,14 +49,3 @@ class Bullet(RawTurtle):
 
     def getRadius(self):
         return .25
-
-    def update(self):
-        self.lifespan -= 1
-        screen = self.getscreen()
-        x = self.xcor()
-        y = self.ycor()
-
-        up_x = (self.dx + x - screenMinX) % (screenMaxX - screenMinX) + screenMinX
-        up_y = (self.dy + y - screenMinY) % (screenMaxY - screenMinY) + screenMinY
-
-        self.goto(up_x, up_y)
