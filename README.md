@@ -4,7 +4,7 @@ This project takes the Atari game Asteroids and makes it playable on your comput
 
 ## Getting Started
 
-To get the code go to your shell and type "git clone https://github.com/irenfro/Asteroids".  This will prvide you with all of the code.  You will need to install a dependancy, look at Prerequisites for how to install them.  Then you will need to navigate into the directory that you cloned and then run the command "python3 main.py" this will will start the game.
+To get the code go to your shell and type "git clone https://github.com/irenfro/Asteroids".  This will provide you with all of the code.  You will need to install a dependancy, look at Prerequisites for how to install them.  Then you will need to navigate into the directory that you cloned and then run the command "python3 main.py" this will will start the game.
 
 ###Prerequisites
 
